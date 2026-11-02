@@ -239,7 +239,7 @@ ENDIF()
 [for (pack : EPackage | aPackage.metaModelLibraries()->reject(doNotGenerateEPackage())->asOrderedSet()) ? (not(pack.name = aPackage.name))]
 FIND_LIBRARY([pack.name.toUpperCase()/]_[libraryVariableNameSuffix(debugMode)/] [pack.name/][libraryNameSuffix(debugMode)/][ending/] ${MDE4CPP_HOME}/application/[folderName/])
 [/for]
-[for (libName : String | aPackage.eAnnotations->select(source = sourceNamePrepareApplication())->first().details->select(d : EStringToStringMapEntry | d.key = keyLibrary()).value)]
+[for (libName : String | aPackage.eAnnotations->select(a : ecore::EAnnotation | a.isApplicationAnnotation())->first().details->select(d : EStringToStringMapEntry | d.key = keyLibrary()).value)]
 [if (not (libName.oclIsUndefined() or libName = ''))]
 FIND_LIBRARY([libName.toUpperCase()/]_[libraryVariableNameSuffix(debugMode)/] [libName/][libraryNameSuffix(debugMode)/][ending/] ${MDE4CPP_HOME}/application/[folderName/])
 [/if]
@@ -256,7 +256,7 @@ TARGET_LINK_LIBRARIES(${PROJECT_NAME}
 [for (pack : EPackage | aPackage.metaModelLibraries()->reject(doNotGenerateEPackage())->asOrderedSet()) ? (not(pack.name = aPackage.name))]
 	[buildModeCMakeProperty(debugMode)/] ${[pack.name.toUpperCase()/]_[libraryVariableNameSuffix(debugMode)/]}
 [/for]
-[for (libName : String | aPackage.eAnnotations->select(source = sourceNamePrepareApplication())->first().details->select(d : EStringToStringMapEntry | d.key = keyLibrary()).value)]
+[for (libName : String | aPackage.eAnnotations->select(a : ecore::EAnnotation | a.isApplicationAnnotation())->first().details->select(d : EStringToStringMapEntry | d.key = keyLibrary()).value)]
 [if (not (libName.oclIsUndefined() or libName = ''))]
 	[buildModeCMakeProperty(debugMode)/] ${[libName.toUpperCase()/]_[libraryVariableNameSuffix(debugMode)/]}
 [/if]

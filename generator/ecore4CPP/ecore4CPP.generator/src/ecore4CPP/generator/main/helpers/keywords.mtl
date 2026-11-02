@@ -78,6 +78,7 @@
  * keywords for source name and keys of prepareApplication annoation
 */]
 [query public sourceNamePrepareApplication(any : OclAny) : String = 'http://tu-ilmenau.de/see/prepareApplication' /]	[** special source for generating class with main function /]
+[query public sourceNameTestApplication(any : OclAny) : String = 'http://tu-ilmenau.de/see/testApplication' /]	[** same behavior as prepareApplication /]
 
 [** keywords used in property files */]
 
