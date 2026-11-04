@@ -65,12 +65,10 @@ using namespace [packageName/];
 // [/protected]
 
 [if (isTestApplication())]
-int main (int argc, char** argv)
+TAU_MAIN()
 [else]
 int main ()
-[/if]
 {
-[if (not isTestApplication())]
 	//Create Model Factory
 	std::shared_ptr<[packageName/]Factory> factory = [packageName/]Factory::eInstance();
 	[if hasCreateApiFlag()]
@@ -78,7 +76,6 @@ int main ()
 	//Create REST-API for Model
 	std::shared_ptr<[packageName/]Api> api = [packageName/]Api::eInstance(factory);
 	[/if]
-[/if]
 
 [if (hasMainSourceCode())]
 [getMainSourceCode()/]
@@ -89,13 +86,10 @@ int main ()
 
 // [/protected]
 
-[if (isTestApplication())]
-    return tau_main(argc, argv);
-[else]
     return 0;
-[/if]
 
 }
+[/if]
 [/file]
 
 [comment ------------------------------------------------------------------- /]
