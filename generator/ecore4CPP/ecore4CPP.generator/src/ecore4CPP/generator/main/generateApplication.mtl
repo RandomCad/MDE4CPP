@@ -66,6 +66,7 @@ using namespace [packageName/];
 
 int main ()
 {
+[if (not isTestApplication())]
 	//Create Model Factory
 	std::shared_ptr<[packageName/]Factory> factory = [packageName/]Factory::eInstance();
 	[if hasCreateApiFlag()]
@@ -73,6 +74,7 @@ int main ()
 	//Create REST-API for Model
 	std::shared_ptr<[packageName/]Api> api = [packageName/]Api::eInstance(factory);
 	[/if]
+[/if]
 
 [if (hasMainSourceCode())]
 [getMainSourceCode()/]

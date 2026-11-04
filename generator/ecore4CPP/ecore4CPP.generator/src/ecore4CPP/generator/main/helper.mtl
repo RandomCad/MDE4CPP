@@ -29,6 +29,7 @@
 */]
 [query public isApplicationAnnotation(a : ecore::EAnnotation) : Boolean = a.source = sourceNamePrepareApplication() or a.source = sourceNameTestApplication() /]
 [query public prepareApplication(ePackage : EPackage) : Boolean = eAllContents()->filter(ecore::EAnnotation)->select(a : ecore::EAnnotation | a.isApplicationAnnotation())->notEmpty() /]
+[query public isTestApplication(ePackage : EPackage) : Boolean = if (prepareApplication()) then eAllContents()->filter(ecore::EAnnotation)->select(a : ecore::EAnnotation | a.isApplicationAnnotation())->first().source = sourceNameTestApplication() else false endif /]
 [query public hasMainSourceCode(ePackage : EPackage) : Boolean = if (prepareApplication()) then eAllContents()->filter(ecore::EAnnotation)->select(a : ecore::EAnnotation | a.isApplicationAnnotation())->first().details->select(key = keyBody())->notEmpty() else false endif /]
 [query public getMainSourceCode(ePackage : EPackage) : String = eAllContents()->filter(ecore::EAnnotation)->select(a : ecore::EAnnotation | a.isApplicationAnnotation())->first().details->select(key = keyBody())->first().value /]
 
