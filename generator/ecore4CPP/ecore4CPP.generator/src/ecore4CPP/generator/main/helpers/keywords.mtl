@@ -79,6 +79,7 @@
 */]
 [query public sourceNamePrepareApplication(any : OclAny) : String = 'http://tu-ilmenau.de/see/prepareApplication' /]	[** special source for generating class with main function /]
 [query public sourceNameTestApplication(any : OclAny) : String = 'http://tu-ilmenau.de/see/testApplication' /]	[** same behavior as prepareApplication /]
+[query public keyTestCasePrefix(any : OclAny) : String = 'testCase.' /]	[** details key prefix of a single test case of a testApplication, the rest of the key is the test name /]
 
 [** keywords used in property files */]
 
