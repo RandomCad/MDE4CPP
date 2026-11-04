@@ -64,7 +64,11 @@ using namespace [packageName/];
 
 // [/protected]
 
+[if (isTestApplication())]
+int main (int argc, char** argv)
+[else]
 int main ()
+[/if]
 {
 [if (not isTestApplication())]
 	//Create Model Factory
@@ -85,7 +89,11 @@ int main ()
 
 // [/protected]
 
+[if (isTestApplication())]
+    return tau_main(argc, argv);
+[else]
     return 0;
+[/if]
 
 }
 [/file]
