@@ -40,6 +40,9 @@
 [if hasCreateApiFlag()]
 #include "[packageName/]/[packageName/]Api.hpp"
 [/if]
+[if (isTestApplication())]
+#include "tau.h"
+[/if]
 
 [for (aEClass : EClass | aPackage.eAllContents(EClass)->reject(doNotGenerateEClassifier()))]
 #include "[aPackage.name/]/[aEClass.name.toUpperFirst()/].hpp"
