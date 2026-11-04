@@ -71,6 +71,7 @@ using namespace [packageName/];
 [for (testCase : EStringToStringMapEntry | getTestCases())]
 TEST([packageName/], [testCase.testCaseName()/])
 {
+	std::shared_ptr<[packageName/]Factory> factory = [packageName/]Factory::eInstance();
 [testCase.value/]
 }
 
