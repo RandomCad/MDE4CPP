@@ -68,6 +68,13 @@ using namespace [packageName/];
 // [/protected]
 
 [if (isTestApplication())]
+[for (testCase : EStringToStringMapEntry | getTestCases())]
+TEST([packageName/], [testCase.testCaseName()/])
+{
+[testCase.value/]
+}
+
+[/for]
 TAU_MAIN()
 [else]
 int main ()
