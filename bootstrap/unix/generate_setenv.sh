@@ -80,6 +80,45 @@ export ORG_GRADLE_PROJECT_WORKER="${WORKER_COUNT:-1}"
 export ORG_GRADLE_PROJECT_RELEASE=1
 export ORG_GRADLE_PROJECT_DEBUG=1
 export ORG_GRADLE_PROJECT_DEBUG_MESSAGE_FUML=0
+EOF
+
+# ccache (compiler cache), controlled by USE_CCACHE (auto|true|false, see MDE4CPP_default.properties)
+print_ccache_warning() {
+    echo "${C_PURPLE}[generate_setenv]${C_WARN} WARNING: ccache will be used for C/C++ compilation.${C_RESET}"
+    echo "${C_PURPLE}[generate_setenv]${C_WARN} The cache (default: ${CCACHE_DIR:-~/.cache/ccache}) can grow up to ${CCACHE_MAXSIZE:-20G} of disk space.${C_RESET}"
+    echo "${C_PURPLE}[generate_setenv]${C_WARN} Lower it with 'export CCACHE_MAXSIZE=5G' or disable it with USE_CCACHE=false in MDE4CPP_custom.properties.${C_RESET}"
+}
+
+case "${USE_CCACHE:-auto}" in
+    false|FALSE|0|no)
+        ;;
+    true|TRUE|1|yes)
+        # forced: always export, even if ccache is not installed (the build then fails loudly)
+        print_ccache_warning
+        cat << EOF >> "$SETENV_FILE"
+
+# ccache (compiler cache) - forced by USE_CCACHE=true
+export CMAKE_C_COMPILER_LAUNCHER=ccache
+export CMAKE_CXX_COMPILER_LAUNCHER=ccache
+export CCACHE_MAXSIZE="\${CCACHE_MAXSIZE:-20G}"
+EOF
+        ;;
+    *)
+        # auto: decided every time setenv.sh is sourced, so installing ccache later just works
+        if command -v ccache >/dev/null 2>&1; then print_ccache_warning; fi
+        cat << EOF >> "$SETENV_FILE"
+
+# ccache (compiler cache) - used if installed (disable with USE_CCACHE=false in MDE4CPP_custom.properties)
+if command -v ccache >/dev/null 2>&1; then
+    export CMAKE_C_COMPILER_LAUNCHER=ccache
+    export CMAKE_CXX_COMPILER_LAUNCHER=ccache
+    export CCACHE_MAXSIZE="\${CCACHE_MAXSIZE:-20G}"
+fi
+EOF
+        ;;
+esac
+
+cat << EOF >> "$SETENV_FILE"
 
 # #############################################################################
 # # Configure JAVA CLASSPATH                                                  #

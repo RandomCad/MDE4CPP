@@ -30,6 +30,18 @@ BOOTSTRAP_SKIP_GRADLE_INSTALL=true
 
 You can skip any part of the bootstrap process (Java, CMake, Eclipse, MinGW, etc.) by setting the corresponding `BOOTSTRAP_SKIP_*=true` flag. Check `MDE4CPP_default.properties` for a full list of available settings.
 
+#### Compiler cache (ccache)
+On Linux/macOS, `setenv.sh` automatically enables [ccache](https://ccache.dev/) for all C/C++ compilation if it is installed (`USE_CCACHE=auto`, the default). Repeated builds and rebuilds after regenerating code become much faster.
+
+**Disk space:** ccache stores compiled object files outside the repository (default `~/.cache/ccache`, or `$CCACHE_DIR`). MDE4CPP generates and compiles a lot of code (debug and release variants), so the cache **can grow up to 20 GB** (`CCACHE_MAXSIZE`, set to `20G` by `setenv.sh` unless you define it yourself). It starts small and only grows as you build; once the limit is reached the oldest entries are evicted automatically.
+
+- Check usage: `ccache -s`
+- Free the space: `ccache -C` (clear) or `ccache -M 5G` (lower the limit)
+- Use a smaller limit permanently: `export CCACHE_MAXSIZE=5G` before sourcing `setenv.sh`
+- Disable completely: set `USE_CCACHE=false` in `MDE4CPP_custom.properties` and re-run the bootstrap, or `unset CMAKE_C_COMPILER_LAUNCHER CMAKE_CXX_COMPILER_LAUNCHER`
+
+CMake only reads the launcher when a build directory is configured. For already configured projects, delete their `CMakeCache.txt` (or do one clean build) so that ccache gets used.
+
 ### 4. Run the Bootstrap Script
 MDE4CPP provides an automated bootstrap script that downloads and configures the required toolchain (Java, CMake, Eclipse with plugins, and MinGW on Windows), sets up your environment variables, and installs third-party dependencies according to your properties.
 
