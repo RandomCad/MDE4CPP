@@ -1,0 +1,54 @@
+/*
+ * MDE4CPP - Model Driven Engineering for C++
+ * Copyright (c) TU Ilmenau, Systems and Software Engineering Group
+ * MIT License
+ */
+
+// Tau (https://github.com/jasmcaus/tau) is a header-only unit testing library.
+// It is downloaded from a pinned git commit and installed to application/include/tau.
+
+plugins {
+	id "de.undercouch.download" version "4.1.1"
+}
+
+def versionProps = new Properties()
+file("${rootDir}/MDE4CPP_default.properties").withInputStream { versionProps.load(it) }
+def customPropsFile = file("${rootDir}/MDE4CPP_custom.properties")
+if (customPropsFile.exists()) {
+    customPropsFile.withInputStream { versionProps.load(it) }
+}
+def tauCommit = versionProps.getProperty('MDE4CPP_TAU_COMMIT')
+
+def tauZip = file("${buildDir}/tau-${tauCommit}.zip")
+
+task downloadTau(type: Download) {
+	description 'download tau sources at the pinned commit'
+	group 'Installation'
+
+	src "https://github.com/jasmcaus/tau/archive/${tauCommit}.zip"
+	dest tauZip
+	quiet true
+	onlyIfModified true
+}
+
+task installTau(dependsOn: downloadTau, type: Copy) {
+	description 'install the tau headers into application/include/tau'
+	group 'Installation'
+
+	// the archive contains a single top-level folder "tau-<commit>/", the headers are in its "tau/" folder
+	from(zipTree(tauZip)) {
+		include '*/tau/*.h'
+		eachFile { it.path = it.path.replaceFirst('^[^/]+/', '') }
+		includeEmptyDirs = false
+	}
+	into "${System.getenv('MDE4CPP_HOME') ?: rootDir}/application/include"
+}
+
+task clean {
+	doLast {
+		delete buildDir
+		delete file("${System.getenv('MDE4CPP_HOME') ?: rootDir}/application/include/tau")
+	}
+}
+
+//EOF

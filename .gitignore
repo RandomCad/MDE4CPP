@@ -40,6 +40,7 @@ MDE4CPP_custom.properties
 
 # Third-party libraries (downloaded during build)
 src/util/antlr4/
+src/util/tau/
 src/util/persistence/xerces/
 src/util/xerces/
 src/common/persistence/xerces/
@@ -47,6 +48,7 @@ src/util/boost/
 !src/util/antlr4/build.gradle
 !src/util/boost/build.gradle
 !src/util/xerces/build.gradle
+!src/util/tau/build.gradle
 
 # Temporary files
 *.bak

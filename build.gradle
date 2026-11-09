@@ -367,6 +367,7 @@ task install{
  	dependsOn 'src:util:xerces:installXerces'
 	dependsOn 'src:util:antlr:installAntlr'
 	dependsOn 'src:util:antlr:compileAntlr4'
+	dependsOn 'src:util:tau:installTau'
 //	dependsOn 'checkEnvironment'
 	
 // install Plugins
