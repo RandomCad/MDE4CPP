@@ -15,6 +15,7 @@
 [module generateApplication('http://www.eclipse.org/emf/2002/Ecore')]
 
 [import ecore4CPP::generator::main::generateEClass /]
+[import ecore4CPP::generator::main::generateTestApplication /]
 [import ecore4CPP::generator::main::generateBuildFile /]
 [import ecore4CPP::generator::main::generateProjectFiles /]
 [import ecore4CPP::generator::main::generateType /]
@@ -26,10 +27,11 @@
 	packageName : String = aPackage.name; 
 	fileName : String = '../application/src/main.cpp';
 }]
-[printInfo(fileGenerationMessage(fileName, 'main application source file'), 2)/]
 [comment ------------------------------------------------------------------- /]
 [comment generate main method of application                                 /]
 [comment ------------------------------------------------------------------- /]
+[if (not isTestApplication())]
+[printInfo(fileGenerationMessage(fileName, 'main application source file'), 2)/]
 [file (fileName, false, 'UTF-8')]
 
 #include <iostream>
@@ -39,9 +41,6 @@
 #include "[aPackage.name/]/[packageName/]Package.hpp"
 [if hasCreateApiFlag()]
 #include "[packageName/]/[packageName/]Api.hpp"
-[/if]
-[if (isTestApplication())]
-#include <tau/tau.h>
 [/if]
 
 [for (aEClass : EClass | aPackage.eAllContents(EClass)->reject(doNotGenerateEClassifier()))]
@@ -67,17 +66,6 @@ using namespace [packageName/];
 
 // [/protected]
 
-[if (isTestApplication())]
-[for (testCase : EStringToStringMapEntry | getTestCases())]
-TEST([packageName/], [testCase.testCaseName()/])
-{
-	std::shared_ptr<[packageName/]Factory> factory = [packageName/]Factory::eInstance();
-[testCase.value/]
-}
-
-[/for]
-TAU_MAIN()
-[else]
 int main ()
 {
 	//Create Model Factory
@@ -100,8 +88,8 @@ int main ()
     return 0;
 
 }
-[/if]
 [/file]
+[/if]
 
 [comment ------------------------------------------------------------------- /]
 [comment CMakeLists.txt file for application build                           /]
@@ -236,6 +224,9 @@ task clean {
 [/file]
 
 [aPackage.generateProjectsFiles(true)/]
+[if (isTestApplication())]
+[aPackage.generateTestApplication()/]
+[/if]
 [/template]
 
 [template private generateCMakeFindLibraryCommands(aPackage : EPackage, ending : String, folderName : String, system : String)]

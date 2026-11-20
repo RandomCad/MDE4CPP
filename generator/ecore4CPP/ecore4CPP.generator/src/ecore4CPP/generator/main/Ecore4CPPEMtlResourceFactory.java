@@ -85,6 +85,7 @@ public class Ecore4CPPEMtlResourceFactory extends EMtlResourceFactoryImpl {
 	{
 		String[] moduleNames = {"generate", 
 								"generateApplication",
+								"generateTestApplication",
 								"generateAttribute",
 								"generateBehavioralFeatureInvoke",
 								"generateBuildFile",
