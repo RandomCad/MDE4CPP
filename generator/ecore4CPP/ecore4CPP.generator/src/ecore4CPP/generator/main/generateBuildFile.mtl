@@ -304,6 +304,8 @@ import org.gradle.internal.os.OperatingSystem;
 description 'Compile task for project: [packageName/]'
 
 task compile[packageName.toUpperFirst()/]Src(type: tui.sse.mde4cpp.MDE4CPPCompile) {
+	[comment output location of the cmake install step; rootDir is wrong if the model lives in a separate gradle build (examples) /]
+	def mde4cppHome = System.getenv('MDE4CPP_HOME') ?: rootDir.toString()
 [comment group '[packageName?' invisible internal compile tasks /]
 	description 'compile [packageName/]'
 
@@ -318,23 +320,23 @@ task compile[packageName.toUpperFirst()/]Src(type: tui.sse.mde4cpp.MDE4CPPCompil
    	}
 
 	if(OperatingSystem.current().isWindows()){
-		if(project.hasProperty('RELEASE') && !project.property('RELEASE').equals('0')){outputs.file file(['['/]rootDir,'application','bin','[packageName/]' +       '.dll'[']'/].join(File.separator))}
-		if(project.hasProperty('DEBUG') && !project.property('DEBUG').equals('0'))  {outputs.file file(['['/]rootDir,'application','bin','[packageName/]' + 'd' + '.dll'[']'/].join(File.separator))}
+		if(project.hasProperty('RELEASE') && !project.property('RELEASE').equals('0')){outputs.file file(['['/]mde4cppHome,'application','bin','[packageName/]' +       '.dll'[']'/].join(File.separator))}
+		if(project.hasProperty('DEBUG') && !project.property('DEBUG').equals('0'))  {outputs.file file(['['/]mde4cppHome,'application','bin','[packageName/]' + 'd' + '.dll'[']'/].join(File.separator))}
 	}
 	else if(OperatingSystem.current().isLinux()){
-		if(project.hasProperty('RELEASE') && !project.property('RELEASE').equals('0')){outputs.file file(['['/]rootDir,'application','bin','[packageName/]' +       '.so'[']'/].join(File.separator))}
-		if(project.hasProperty('DEBUG') && !project.property('DEBUG').equals('0'))  {outputs.file file(['['/]rootDir,'application','bin','[packageName/]' + 'd' + '.so'[']'/].join(File.separator))}
+		if(project.hasProperty('RELEASE') && !project.property('RELEASE').equals('0')){outputs.file file(['['/]mde4cppHome,'application','bin','[packageName/]' +       '.so'[']'/].join(File.separator))}
+		if(project.hasProperty('DEBUG') && !project.property('DEBUG').equals('0'))  {outputs.file file(['['/]mde4cppHome,'application','bin','[packageName/]' + 'd' + '.so'[']'/].join(File.separator))}
 	}
 	else if(OperatingSystem.current().isMacOsX()){
-		if(project.hasProperty('RELEASE') && !project.property('RELEASE').equals('0')){outputs.file file(['['/]rootDir,'application','bin','[packageName/]' +       '.dylib'[']'/].join(File.separator))}
-		if(project.hasProperty('DEBUG') && !project.property('DEBUG').equals('0'))  {outputs.file file(['['/]rootDir,'application','bin','[packageName/]' + 'd' + '.dylib'[']'/].join(File.separator))}
+		if(project.hasProperty('RELEASE') && !project.property('RELEASE').equals('0')){outputs.file file(['['/]mde4cppHome,'application','bin','[packageName/]' +       '.dylib'[']'/].join(File.separator))}
+		if(project.hasProperty('DEBUG') && !project.property('DEBUG').equals('0'))  {outputs.file file(['['/]mde4cppHome,'application','bin','[packageName/]' + 'd' + '.dylib'[']'/].join(File.separator))}
 	}
 	else {
 	    //not supported os
 	}
 
-	outputs.files(fileTree(['['/]rootDir,'application','include','[packageName/]'[']'/].join(File.separator)))
-	outputs.dir(['['/]rootDir,'application','include','[packageName/]'[']'/].join(File.separator))
+	outputs.files(fileTree(['['/]mde4cppHome,'application','include','[packageName/]'[']'/].join(File.separator)))
+	outputs.dir(['['/]mde4cppHome,'application','include','[packageName/]'[']'/].join(File.separator))
 
 	[comment Compiletask soll!! unabhängig vom Generate Task sein! KEINE Dependency zum generate task ausgehend vom compiletask!
 		nur mustRunAfter !   

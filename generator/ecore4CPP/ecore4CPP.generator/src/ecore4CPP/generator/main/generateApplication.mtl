@@ -190,6 +190,8 @@ import org.gradle.internal.os.OperatingSystem;
 description 'Compile task for project: App_[packageName/]'
 
 task compileApplicationFor[packageName.toUpperFirst()/]Src(type: tui.sse.mde4cpp.MDE4CPPCompile) {
+	[comment output location of the cmake install step; rootDir is wrong if the model lives in a separate gradle build (examples) /]
+	def mde4cppHome = System.getenv('MDE4CPP_HOME') ?: rootDir.toString()
 [comment hide compileApplication	group '[packageName ??' /]
 	description 'compile ['ApplicationFor'.concat(packageName)/]'
 
@@ -207,12 +209,12 @@ task compileApplicationFor[packageName.toUpperFirst()/]Src(type: tui.sse.mde4cpp
 	}
 
 	if(OperatingSystem.current().isWindows()){
-		if(project.hasProperty('RELEASE') && !project.property('RELEASE').equals('0')){outputs.file file(['['/]rootDir,'application','bin','App_' + '[packageName/]' +       '.exe'[']'/].join(File.separator))}
-		if(project.hasProperty('DEBUG') && !project.property('DEBUG').equals('0'))    {outputs.file file(['['/]rootDir,'application','bin','App_' + '[packageName/]' + 'd' + '.exe'[']'/].join(File.separator))}
+		if(project.hasProperty('RELEASE') && !project.property('RELEASE').equals('0')){outputs.file file(['['/]mde4cppHome,'application','bin','App_' + '[packageName/]' +       '.exe'[']'/].join(File.separator))}
+		if(project.hasProperty('DEBUG') && !project.property('DEBUG').equals('0'))    {outputs.file file(['['/]mde4cppHome,'application','bin','App_' + '[packageName/]' + 'd' + '.exe'[']'/].join(File.separator))}
 	}
 	else if(OperatingSystem.current().isLinux() || OperatingSystem.current().isMacOsX()){
-		if(project.hasProperty('RELEASE') && !project.property('RELEASE').equals('0')){outputs.file file(['['/]rootDir,'application','bin','App_' + '[packageName/]'      [']'/].join(File.separator))}
-		if(project.hasProperty('DEBUG') && !project.property('DEBUG').equals('0'))    {outputs.file file(['['/]rootDir,'application','bin','App_' + '[packageName/]' + 'd'[']'/].join(File.separator))}
+		if(project.hasProperty('RELEASE') && !project.property('RELEASE').equals('0')){outputs.file file(['['/]mde4cppHome,'application','bin','App_' + '[packageName/]'      [']'/].join(File.separator))}
+		if(project.hasProperty('DEBUG') && !project.property('DEBUG').equals('0'))    {outputs.file file(['['/]mde4cppHome,'application','bin','App_' + '[packageName/]' + 'd'[']'/].join(File.separator))}
 	}
 }
 
