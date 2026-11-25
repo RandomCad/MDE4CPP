@@ -66,6 +66,7 @@
 [comment Package generation /]
 	[printInfo(anEPackage.ePackageGenerationMessage())/]
 
+[if (not anEPackage.isTestModel())]
 	[for (anEClass : EClass | anEPackage.eContents(EClass))]
 		[if (anEClass.doNotGenerateEClassifier())]
 			[printInfo(anEClass.eClassifierNoGenerationMessage(), 1)/]
@@ -93,13 +94,19 @@
         	[anEPackage.generateModelApi()/]
 		[/if]
 
+[/if]
+
 	[comment Model plugin, build files, project files and main application are only generated for the root package/]
 	[if (anEPackage.eSuperPackage.oclIsUndefined())]
+		[if (not anEPackage.isTestModel())]
 		[printInfo('Generating plugin class for EPackage ' + anEPackage.generateNamespaceDefinition(), 1)/]
 		[anEPackage.generateEcorePlugin()/]
+		[/if]
 		[anEPackage.generateBuildFile()/]
 		[anEPackage.generateProjectsFiles()/]
+		[if (not anEPackage.isTestModel())]
 		[anEPackage.generatePackageHeaderFile()/]
+		[/if]
 	
 		[if (anEPackage.prepareApplication())]
 			[printInfo('Generating main application for EPackage ' + anEPackage.generateNamespaceDefinition(), 1)/]

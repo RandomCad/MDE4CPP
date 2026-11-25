@@ -251,7 +251,9 @@ FIND_LIBRARY([pack.name.toUpperCase()/]_[libraryVariableNameSuffix(debugMode)/] 
 FIND_LIBRARY([libName.toUpperCase()/]_[libraryVariableNameSuffix(debugMode)/] [libName/][libraryNameSuffix(debugMode)/][ending/] ${MDE4CPP_HOME}/application/[folderName/])
 [/if]
 [/for]
+[if (not aPackage.isTestModel())]
 FIND_LIBRARY([aPackage.name.toUpperCase()/]_[libraryVariableNameSuffix(debugMode)/] [aPackage.name/][libraryNameSuffix(debugMode)/][ending/] ${MDE4CPP_HOME}/application/[folderName/])
+[/if]
 # [protected ('library_' + system + '_' + buildModeCMakeProperty(debugMode))] 
 # You may manually edit the following lines, won't be overwritten upon generation.
 
@@ -268,7 +270,9 @@ TARGET_LINK_LIBRARIES(${PROJECT_NAME}
 	[buildModeCMakeProperty(debugMode)/] ${[libName.toUpperCase()/]_[libraryVariableNameSuffix(debugMode)/]}
 [/if]
 [/for]
+[if (not aPackage.isTestModel())]
 	[buildModeCMakeProperty(debugMode)/] ${[aPackage.name.toUpperCase()/]_[libraryVariableNameSuffix(debugMode)/]}
+[/if]
 
 	[if hasCreateApiFlag()]
     [buildModeCMakeProperty(debugMode)/] ws2_32

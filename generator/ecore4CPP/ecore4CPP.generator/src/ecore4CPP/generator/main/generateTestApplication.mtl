@@ -24,6 +24,8 @@
 	packageName : String = aPackage.name; 
 	fileName : String = '../application/src/main.cpp';
 	testFileName : String = 'test/' + packageName + 'Test.cpp';
+	testedPackage : EPackage = if (aPackage.isTestModel()) then aPackage.testedPackages()->first().getRootPackage() else aPackage endif;
+	testedName : String = testedPackage.name;
 }]
 [printInfo(fileGenerationMessage(fileName, 'test application source file'), 2)/]
 [file (fileName, false, 'UTF-8')]
@@ -39,13 +41,13 @@ TAU_MAIN()
 
 #include <tau/tau.h>
 #include "abstractDataTypes/SubsetUnion.hpp"
-#include "[aPackage.name/]/[packageName/]Factory.hpp"
-#include "[aPackage.name/]/[packageName/]Package.hpp"
-[for (aEClass : EClass | aPackage.eAllContents(EClass)->reject(doNotGenerateEClassifier()))]
-#include "[aPackage.name/]/[aEClass.name.toUpperFirst()/].hpp"
+#include "[testedName/]/[testedName/]Factory.hpp"
+#include "[testedName/]/[testedName/]Package.hpp"
+[for (aEClass : EClass | testedPackage.eAllContents(EClass)->reject(doNotGenerateEClassifier()))]
+#include "[testedName/]/[aEClass.name.toUpperFirst()/].hpp"
 [/for]
-[for (anEEnum : EEnum | aPackage.eAllContents(EEnum)->reject(doNotGenerateEClassifier()))]
-#include "[aPackage.name/]/[anEEnum.name/].hpp"
+[for (anEEnum : EEnum | testedPackage.eAllContents(EEnum)->reject(doNotGenerateEClassifier()))]
+#include "[testedName/]/[anEEnum.name/].hpp"
 [/for]
 
 [if (hasMainSourceIncludes())]
@@ -57,7 +59,7 @@ TAU_MAIN()
 
 // [/protected]
 
-using namespace [packageName/];
+using namespace [testedName/];
 
 // [protected ('functions')] 
 // You may manually edit additional functions, won't be overwritten upon generation.
@@ -67,7 +69,7 @@ using namespace [packageName/];
 [for (testCase : EStringToStringMapEntry | getTestCases())]
 TEST([packageName/], [testCase.testCaseName()/])
 {
-	std::shared_ptr<[packageName/]Factory> factory = [packageName/]Factory::eInstance();
+	std::shared_ptr<[testedName/]Factory> factory = [testedName/]Factory::eInstance();
 [testCase.value/]
 }
 

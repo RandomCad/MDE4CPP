@@ -11,5 +11,4 @@ rootProject.name = 'copyTest'
 
 include ':model'
 include ':src_gen'
-include ':application'
 

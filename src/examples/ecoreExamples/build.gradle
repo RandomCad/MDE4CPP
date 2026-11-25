@@ -48,6 +48,7 @@ def allEcoreTestSuiteModels =
 [
 //	[{Model project directory}, {Model name}, {taskName}]
 	 ['./TestSuite/copyTest/', 'copyTest', 'CopyTest']
+	,['./TestSuite/test/', 'testTest', 'TestTest']
 //	,['./TestSuite/eInvokeTest/', 'EInvokeTest', 'EInvokeTest']
 //	,['./TestSuite/SubPackagetest/', 'tobedone', 'Tobedone']
 	,['./TestSuite/SubsetUnionExample/SubsetUnion/', 'subsetUnion', 'SubsetUnion']	

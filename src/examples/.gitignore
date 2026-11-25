@@ -20,6 +20,9 @@ application/
 /ecoreExamples/TestSuite/copyTest/build.gradle
 /ecoreExamples/TestSuite/copyTest/model/copyTest.genmodel
 
+/ecoreExamples/TestSuite/test/.cproject
+/ecoreExamples/TestSuite/test/.project
+/ecoreExamples/TestSuite/test/build.gradle
 /ecoreExamples/TestSuite/eInvokeTest/.cproject
 /ecoreExamples/TestSuite/eInvokeTest/.project
 /ecoreExamples/TestSuite/eInvokeTest/build.gradle
