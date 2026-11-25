@@ -198,6 +198,9 @@ task compileApplicationFor[packageName.toUpperFirst()/]Src(type: tui.sse.mde4cpp
 	inputs.files(fileTree('.') {
         exclude 'src/.cmake/**'
     })
+[if (isTestApplication())]
+	inputs.files(fileTree('..' + File.separator + 'src_gen' + File.separator + 'test'))
+[/if]
 
 	if(!file('.' + File.separator + 'src' + File.separator + '.cmake' + File.separator).exists()) {
 		outputs.upToDateWhen { false }

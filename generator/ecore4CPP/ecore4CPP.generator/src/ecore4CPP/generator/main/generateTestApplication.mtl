@@ -23,9 +23,17 @@
 [template public generateTestApplication(aPackage : EPackage) { 
 	packageName : String = aPackage.name; 
 	fileName : String = '../application/src/main.cpp';
+	testFileName : String = 'test/' + packageName + 'Test.cpp';
 }]
 [printInfo(fileGenerationMessage(fileName, 'test application source file'), 2)/]
 [file (fileName, false, 'UTF-8')]
+#include <tau/tau.h>
+
+TAU_MAIN()
+[/file]
+
+[printInfo(fileGenerationMessage(testFileName, 'test source file'), 2)/]
+[file (testFileName, false, 'UTF-8')]
 
 #include <iostream>
 
@@ -64,7 +72,6 @@ TEST([packageName/], [testCase.testCaseName()/])
 }
 
 [/for]
-TAU_MAIN()
 [/file]
 
 [file ('../application/src/CMakeLists.txt', false, 'UTF-8')]
@@ -99,6 +106,7 @@ string(REPLACE "\\" "/" MDE4CPP_HOME $ENV{MDE4CPP_HOME})
 
 SET(SOURCE_FILES
 	main.cpp
+	../../src_gen/test/[packageName/]Test.cpp
 # [protected ('cpp')]
 # You may manually edit the following lines, won't be overwritten upon generation.
 
