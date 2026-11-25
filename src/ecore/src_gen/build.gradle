@@ -9,6 +9,7 @@ import org.gradle.internal.os.OperatingSystem;
 description 'Compile task for project: ecore'
 
 task compileEcoreSrc(type: tui.sse.mde4cpp.MDE4CPPCompile) {
+	def mde4cppHome = System.getenv('MDE4CPP_HOME') ?: rootDir.toString()
 	description 'compile ecore'
 
 	projectFolder = file('.' + File.separator + 'ecore')
@@ -22,23 +23,23 @@ task compileEcoreSrc(type: tui.sse.mde4cpp.MDE4CPPCompile) {
    	}
 
 	if(OperatingSystem.current().isWindows()){
-		if(project.hasProperty('RELEASE') && !project.property('RELEASE').equals('0')){outputs.file file([rootDir,'application','bin','ecore' +       '.dll'].join(File.separator))}
-		if(project.hasProperty('DEBUG') && !project.property('DEBUG').equals('0'))  {outputs.file file([rootDir,'application','bin','ecore' + 'd' + '.dll'].join(File.separator))}
+		if(project.hasProperty('RELEASE') && !project.property('RELEASE').equals('0')){outputs.file file([mde4cppHome,'application','bin','ecore' +       '.dll'].join(File.separator))}
+		if(project.hasProperty('DEBUG') && !project.property('DEBUG').equals('0'))  {outputs.file file([mde4cppHome,'application','bin','ecore' + 'd' + '.dll'].join(File.separator))}
 	}
 	else if(OperatingSystem.current().isLinux()){
-		if(project.hasProperty('RELEASE') && !project.property('RELEASE').equals('0')){outputs.file file([rootDir,'application','bin','ecore' +       '.so'].join(File.separator))}
-		if(project.hasProperty('DEBUG') && !project.property('DEBUG').equals('0'))  {outputs.file file([rootDir,'application','bin','ecore' + 'd' + '.so'].join(File.separator))}
+		if(project.hasProperty('RELEASE') && !project.property('RELEASE').equals('0')){outputs.file file([mde4cppHome,'application','bin','ecore' +       '.so'].join(File.separator))}
+		if(project.hasProperty('DEBUG') && !project.property('DEBUG').equals('0'))  {outputs.file file([mde4cppHome,'application','bin','ecore' + 'd' + '.so'].join(File.separator))}
 	}
 	else if(OperatingSystem.current().isMacOsX()){
-		if(project.hasProperty('RELEASE') && !project.property('RELEASE').equals('0')){outputs.file file([rootDir,'application','bin','ecore' +       '.dylib'].join(File.separator))}
-		if(project.hasProperty('DEBUG') && !project.property('DEBUG').equals('0'))  {outputs.file file([rootDir,'application','bin','ecore' + 'd' + '.dylib'].join(File.separator))}
+		if(project.hasProperty('RELEASE') && !project.property('RELEASE').equals('0')){outputs.file file([mde4cppHome,'application','bin','ecore' +       '.dylib'].join(File.separator))}
+		if(project.hasProperty('DEBUG') && !project.property('DEBUG').equals('0'))  {outputs.file file([mde4cppHome,'application','bin','ecore' + 'd' + '.dylib'].join(File.separator))}
 	}
 	else {
 	    //not supported os
 	}
 
-	outputs.files(fileTree([rootDir,'application','include','ecore'].join(File.separator)))
-	outputs.dir([rootDir,'application','include','ecore'].join(File.separator))
+	outputs.files(fileTree([mde4cppHome,'application','include','ecore'].join(File.separator)))
+	outputs.dir([mde4cppHome,'application','include','ecore'].join(File.separator))
 
 		mustRunAfter = [getRootProject().getTasksByName('generateEcore', true)]
 
