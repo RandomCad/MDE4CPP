@@ -4,6 +4,7 @@
 **/.cmake/
 **/.gradle/
 application/bin/
+application/test/
 application/include/
 application/lib/
 application/generator/

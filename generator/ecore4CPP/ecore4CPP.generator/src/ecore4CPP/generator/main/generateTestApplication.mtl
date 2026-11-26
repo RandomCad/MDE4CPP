@@ -160,8 +160,22 @@ ENDIF()
 # DELIVERING binaries and header to ${MDE4CPP_HOME}
 #-----------------------------------------------------
 
+# Test applications are installed to their own folder together with the
+# libraries they need, so that the folder is self-contained.
 INSTALL(TARGETS ${PROJECT_NAME} 
-	RUNTIME DESTINATION ${MDE4CPP_HOME}/application/bin
+	RUNTIME DESTINATION ${MDE4CPP_HOME}/application/test
 )
+
+INSTALL(CODE "
+	file(GET_RUNTIME_DEPENDENCIES
+		EXECUTABLES $<TARGET_FILE:${PROJECT_NAME}>
+		DIRECTORIES ${MDE4CPP_HOME}/application/bin
+		RESOLVED_DEPENDENCIES_VAR testAppDependencies
+		UNRESOLVED_DEPENDENCIES_VAR testAppUnresolved
+	)
+	# only the model libraries from application/bin, never system libraries
+	list(FILTER testAppDependencies INCLUDE REGEX /application/bin/)
+	file(INSTALL \${testAppDependencies} DESTINATION ${MDE4CPP_HOME}/application/test FOLLOW_SYMLINK_CHAIN)
+")
 [/file]
 [/template]
